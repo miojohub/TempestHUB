@@ -1656,7 +1656,7 @@ function Material.Load(Config)
 
 				local BuildTable = {}
 
-				table.foreach(DataTableOptions, function(Key, Value)
+				for Key, Value in DataTableOptions do
 					if typeof(Value) == "table" then
 						BuildTable[Key] = Value.Enabled
 						if not Material.Options[tostring(Value.Id)] then Material.Options[tostring(Value.Id)] = {} end
@@ -1664,7 +1664,7 @@ function Material.Load(Config)
 					else
 						print("Error missing Option")
 					end
-				end)
+				end
 
 				DataTableCallback(BuildTable)
 
