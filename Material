@@ -905,10 +905,10 @@ function Material.Load(Config)
 	wait(1)
     Material["Loaded"] = true
 
-	coroutine.wrap(function()
+	task.spawn(function()
 		while task.wait() and Material.Loaded do
 			for posIndex, LoopTable in next, Material.Loop.Storage do
-				coroutine.wrap(function()
+				task.spawn(function()
 					if LoopTable.InCooldown then return end
 					if LoopTable.Time > 0 then
 						local storageID = Material.Loop.Storage[posIndex].ID
@@ -924,10 +924,10 @@ function Material.Load(Config)
 					if LoopTable.Function then
 						LoopTable.Function()
 					end
-				end)()
+				end)
 			end
 		end
-	end)()
+	end)
 
 	if NavBarMenu then
 		TweenService:Create(TitleText, TweenInfo.new(0.5), {
