@@ -2141,9 +2141,13 @@ function Material.Load(Config)
 
 		function OptionLibrary.TextField(TextFieldConfig)
 			local TextFieldText = TextFieldConfig.Text or "nil text field"
+			local TextFieldId = TextFieldConfig.Id or TextFieldConfig.Text
 			local TextFieldInputType = TextFieldConfig.Type or TextFieldConfig.type or "Default"
-			local TextFieldCallback = TextFieldConfig.Callback or function() print("nil text field") end
+			local TextFieldCallback = TextFieldConfig.Callback or function() end
 			local Menu = TextFieldConfig.Menu or {}
+			
+			if not Material.Options[TextFieldId] then Material.Options[TextFieldId] = {} end
+			Material.Options[TextFieldId].Value = ""
 
 			local TextField = Objects.new("Round")
 			TextField.Name = "TextField"
@@ -2190,13 +2194,13 @@ function Material.Load(Config)
 			TextInput.FocusLost:Connect(function()
 				TweenService:Create(TextField, TweenInfo.new(0.5), {ImageTransparency = 0.8}):Play()
 				TweenService:Create(TextInput, TweenInfo.new(0.5), {TextTransparency = 0.5}):Play()
-				TextFieldCallback(TextInput.Text)
+				Material.Options[TextFieldId].Value = TextInput.Text
 			end)
 
 			local MenuAdded, MenuBar = TryAddMenu(TextField, Menu, {
 				SetText = function(Value)
 					TextInput.Text = Value
-					TextFieldCallback(TextInput.Text)
+					Material.Options[TextFieldId].Value = TextInput.Text
 				end
 			})
 
@@ -2208,6 +2212,7 @@ function Material.Load(Config)
 
 			function TextFieldLibrary:SetText(Value)
 				TextInput.Text = Value
+				Material.Options[TextFieldId].Value = TextInput.Text
 			end
 
 			function TextFieldLibrary:GetText()
